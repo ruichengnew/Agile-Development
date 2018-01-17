@@ -15,19 +15,17 @@ class Game(object):
         self.adjustCurrentFrame(pins)
 
     def adjustCurrentFrame(self, pins):
-        if self.strike(pins):
+        if self.lastBallInFrame(pins):
             self.advanceFrame()
-        elif self.firstThrowInFrame:
-            self.advanceFrame()
-            self.firstThrowInFrame = False
-        else:
             self.firstThrowInFrame = True
+        else:
+            self.firstThrowInFrame = False
 
-#    def lastBallInFrame(self, pins):
-#        return self.strike(pins) or not self.firstThrowInFrame
+    def lastBallInFrame(self, pins):
+        return self.strike(pins) or not self.firstThrowInFrame
 
     def strike(self, pins):
-        return (pins == 10)
+        return (self.firstThrowInFrame and pins == 10)
 
     def advanceFrame(self):
         self.itsCurrentFrame = min(10, self.itsCurrentFrame + 1)
